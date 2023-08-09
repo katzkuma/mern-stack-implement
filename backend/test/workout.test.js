@@ -1,5 +1,7 @@
 const server = require('../server')
 const request = require('supertest')(server)
+const { expectJsonResponse } = require('./utils/expectJson');
+const { expectStatusResponseToBe200 } = require('./utils/expectStatus');
 
 describe('GET /workouts/:id', () => {
 
@@ -7,14 +9,12 @@ describe('GET /workouts/:id', () => {
 
         test('should respond with a 200 status code ', async () => {
             const response = await request.get("/api/workouts/1");
-
-            expect(response.statusCode).toBe(200)
+            expectStatusResponseToBe200(response)
         });
         
         test('should specify json in the content type header ', async () => {
             const response = await request.get("/api/workouts/1");
-
-            expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
+            expectJsonResponse(response)
         });
 
         test('should get correct workouts data ', async () => {
@@ -30,14 +30,12 @@ describe('GET /workouts', () => {
     describe('get all workouts', () => {
         test('should respond with a 200 status code ', async () => {
             const response = await request.get("/api/workouts");
-
-            expect(response.statusCode).toBe(200)
+            expectStatusResponseToBe200(response)
         });
         
         test('should specify json in the content type header ', async () => {
             const response = await request.get("/api/workouts");
-
-            expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
+            expectJsonResponse(response)
         });
 
         test('should get correct workouts data ', async () => {
