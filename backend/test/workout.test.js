@@ -96,3 +96,69 @@ describe('POST /workouts', () => {
         });
     });
 });
+
+describe('DELETE /workout/:id', () => {
+    describe('delete a workout', () => {
+        test('should respond with a 200 status code and return a json', async () => {
+            const firstWorkout = (await request.get("/api/workouts")).body[0];
+            const response = await request.delete("/api/workouts/" + firstWorkout._id)
+
+            expectStatusResponseToBe200(response)
+            expectJsonResponse(response)
+        });
+    });
+
+    describe('when id is not matched', () => {
+        test('should respond with a 404 status code ', async () => {
+            const response = await request.delete("/api/workouts/9999999999");
+
+            expectStatusResponseToBe404(response)
+        });
+    });
+});
+
+describe('UPDATE /workout/:id', () => {
+    describe('update a workout', () => {
+        test('should respond with a 200 status code and return a json', async () => {
+            const firstWorkout = (await request.get("/api/workouts")).body[0];
+            const response = await request.patch("/api/workouts/" + firstWorkout._id)
+
+            expectStatusResponseToBe200(response)
+            expectJsonResponse(response)
+        });
+    });
+
+    describe('update a workout', () => {
+        test('should respond with a 200 status code, return a json, update correctly', async () => {
+            const firstWorkout = (await request.get("/api/workouts")).body[0];
+
+            // create data for updating
+            const updatedData = {
+                title: 'Updated Workout Title',
+                load: 150,
+                reps: 12
+            };
+    
+            const response = await request.patch("/api/workouts/" + firstWorkout._id)
+                .send(updatedData); 
+
+            expectStatusResponseToBe200(response)
+            expectJsonResponse(response)
+    
+            // get the same workout to check again
+            const updatedWorkout = (await request.get("/api/workouts/" + firstWorkout._id)).body;
+
+            expect(updatedWorkout).toEqual(expect.objectContaining(updatedData));
+
+        });
+    });
+    
+
+    describe('when id is not matched', () => {
+        test('should respond with a 404 status code ', async () => {
+            const response = await request.patch("/api/workouts/9999999999");
+
+            expectStatusResponseToBe404(response)
+        });
+    });
+});
