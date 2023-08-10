@@ -35,7 +35,7 @@ describe('GET /workouts/:id', () => {
     });
 
     describe('When id is not matched to any workout', () => {
-        test('should respond with a 400 status code ', async () => {
+        test('should respond with a 404 status code ', async () => {
             const response = await request.get("/api/workouts/9999999999");
 
             expectStatusResponseToBe404(response)
