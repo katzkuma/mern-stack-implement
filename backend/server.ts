@@ -1,8 +1,12 @@
-require('dotenv').config()
+import * as dotenv from 'dotenv'
+import express from 'express';
+import mongoose from 'mongoose';
 
-const express = require('express')
-const mongoose = require('mongoose')
-const workoutRouter = require('./routes/workoutsRouter')
+import workoutRouter from './routes/workoutsRouter';
+
+// initial .env file
+dotenv.config()
+
 // initial app
 const app = express()
 
@@ -12,10 +16,8 @@ app.use((req, res, next) => {
     console.log(req.path, req.method, req.url, req.body)
     next()
 })
-
 // routes
 app.use('/api/workouts', workoutRouter)
-
 // connect to db
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
@@ -28,4 +30,4 @@ mongoose.connect(process.env.MONGO_URI)
         console.log(error);
     })
 
-module.exports = app
+export default app

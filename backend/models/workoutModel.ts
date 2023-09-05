@@ -1,6 +1,11 @@
-const mongoose = require('mongoose')
+import { Schema, model } from 'mongoose';
+import { BaseSchema } from './mongooseBaseModel';
 
-const Schema = mongoose.Schema
+export interface workoutInterface extends BaseSchema {
+    title: string;
+    load: Number;
+    reps: Number;
+}
 
 const workoutSchema = new Schema({
     title: {
@@ -18,4 +23,4 @@ const workoutSchema = new Schema({
     
 }, { timestamps: true })
 
-module.exports = mongoose.model('Workout', workoutSchema)
+export default model('Workout', workoutSchema)

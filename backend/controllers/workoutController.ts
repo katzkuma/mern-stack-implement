@@ -1,17 +1,20 @@
-const { json } = require('express')
-const Workout = require('../models/workoutModel')
+import Workout, { workoutInterface } from '../models/workoutModel';
+import { Request, Response } from 'express'
 
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 // get all workouts
-const getWorkouts = async (req, res) => {
+export const getWorkouts = async (req: Request, res: Response) => {
     const workouts = await Workout.find({}).sort({createAt: -1})
+    Workout.find({
+        load: 123,
+    })
 
     res.status(200).json(workouts)
 }
 
 // get a single workout
-const getWorkout = async (req, res) => {
+export const getWorkout = async (req: Request, res: Response) => {
     const {id} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -28,10 +31,10 @@ const getWorkout = async (req, res) => {
 }
 
 // create new workout
-const createWorkout = async (req, res) => {
-    const {title, load, reps} = req.body
+export const createWorkout = async (req: Request, res: Response) => {
+    const {title, load, reps}: workoutInterface = req.body
 
-    let emptyFields = []
+    let emptyFields: string[] = []
 
     if(!title) {
         emptyFields.push('title')
@@ -50,13 +53,13 @@ const createWorkout = async (req, res) => {
     try {
         const workout = await Workout.create({title, load, reps})
         res.status(200).json(workout)
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).json({error: error.message})
     }
 }
 
 // delete a workout
-const deleteWorkout = async (req, res) => {
+export const deleteWorkout = async (req: Request, res: Response) => {
     const { id } = req.params
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: 'No such workout'})
@@ -72,7 +75,7 @@ const deleteWorkout = async (req, res) => {
 }
 
 // update a workout
-const updateWorkout = async (req, res) => {
+export const updateWorkout = async (req: Request, res: Response) => {
     const { id } = req.params
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: 'No such workout'})
@@ -87,12 +90,4 @@ const updateWorkout = async (req, res) => {
     }
 
     res.status(200).json(workout)
-}
-
-module.exports ={
-    getWorkouts,
-    getWorkout,
-    createWorkout,
-    deleteWorkout,
-    updateWorkout
 }

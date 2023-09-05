@@ -3,3 +3,4 @@
 *.env
 */.vscode
 *launch.json
+*dist/

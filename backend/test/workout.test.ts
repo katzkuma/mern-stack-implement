@@ -1,32 +1,42 @@
-const server = require('../server')
-const request = require('supertest')(server)
-const { expectJsonResponse } = require('./utils/expectJson');
-const { 
-    expectStatusResponseToBe200, 
+import server from '../server';
+import supertest, { Request } from 'supertest';
+import expectJsonResponse from './utils/expectJson';
+import { workoutInterface } from '../models/workoutModel';
+
+// const server = require('../server')
+// const request = require('supertest')(server)
+// const { expectJsonResponse } = require('./utils/expectJson');
+
+import {
+    expectStatusResponseToBe200,
     expectStatusResponseToBe400,
     expectStatusResponseToBe404
- } = require('./utils/expectStatus');
+} from './utils/expectStatus';
+
+// Initialize supertest request
+const request = supertest(server)
+
 
 describe('GET /workouts/:id', () => {
 
     describe('get a single workout', () => {
 
         test('should respond with a 200 status code ', async () => {
-            const firstWorkout = (await request.get("/api/workouts")).body[0]
+            const firstWorkout: workoutInterface = (await request.get("/api/workouts")).body[0]
             const response = await request.get("/api/workouts/"+ firstWorkout._id);
 
             expectStatusResponseToBe200(response)
         });
         
         test('should specify json in the content type header ', async () => {
-            const firstWorkout = (await request.get("/api/workouts")).body[0];
+            const firstWorkout: workoutInterface = (await request.get("/api/workouts")).body[0];
             const response = await request.get("/api/workouts/"+ firstWorkout._id);
 
             expectJsonResponse(response)
         });
 
         test('should get correct workouts data ', async () => {
-            const firstWorkout = (await request.get("/api/workouts")).body[0];
+            const firstWorkout: workoutInterface = (await request.get("/api/workouts")).body[0];
             const response = await request.get("/api/workouts/"+ firstWorkout._id);
 
             expect(response.body).toBeDefined()
@@ -100,7 +110,7 @@ describe('POST /workouts', () => {
 describe('DELETE /workout/:id', () => {
     describe('delete a workout', () => {
         test('should respond with a 200 status code and return a json', async () => {
-            const firstWorkout = (await request.get("/api/workouts")).body[0];
+            const firstWorkout: workoutInterface = (await request.get("/api/workouts")).body[0];
             const response = await request.delete("/api/workouts/" + firstWorkout._id)
 
             expectStatusResponseToBe200(response)
@@ -120,7 +130,7 @@ describe('DELETE /workout/:id', () => {
 describe('UPDATE /workout/:id', () => {
     describe('update a workout', () => {
         test('should respond with a 200 status code and return a json', async () => {
-            const firstWorkout = (await request.get("/api/workouts")).body[0];
+            const firstWorkout: workoutInterface = (await request.get("/api/workouts")).body[0];
             const response = await request.patch("/api/workouts/" + firstWorkout._id)
 
             expectStatusResponseToBe200(response)
@@ -130,7 +140,7 @@ describe('UPDATE /workout/:id', () => {
 
     describe('update a workout', () => {
         test('should respond with a 200 status code, return a json, update correctly', async () => {
-            const firstWorkout = (await request.get("/api/workouts")).body[0];
+            const firstWorkout: workoutInterface = (await request.get("/api/workouts")).body[0];
 
             // create data for updating
             const updatedData = {
@@ -146,7 +156,7 @@ describe('UPDATE /workout/:id', () => {
             expectJsonResponse(response)
     
             // get the same workout to check again
-            const updatedWorkout = (await request.get("/api/workouts/" + firstWorkout._id)).body;
+            const updatedWorkout: workoutInterface[] = (await request.get("/api/workouts/" + firstWorkout._id)).body;
 
             expect(updatedWorkout).toEqual(expect.objectContaining(updatedData));
 
