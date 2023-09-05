@@ -1,7 +1,7 @@
 # Journey of Transferring Javascript to Typescript
----
+Hello there, this doc will show you the whole process of what I have done to transfer a Javascript project to a TypeScript project.
 
-## Transferring Backend
+## Starting from  Backend
 ### 1. Install dependency
 ```shell
 cd backend
@@ -55,8 +55,7 @@ Add transpiling process into launch script of `package.json`
 | test | Run the testing code `*.test.ts` |
 
 ### 7. Done!
----
-## Transferring Testing
+## Then Testing Code of Backend
 ### 1. Replace `jest` to `ts-jest`
 ```shell
 npm uninstall jest
@@ -93,5 +92,5 @@ Leave the original testing command. `ts-jest` will use the same command to run t
 }
 ```
 ### 5. Done!
----
+## Frontend Coming soon.
 ## Happy Transferring!
