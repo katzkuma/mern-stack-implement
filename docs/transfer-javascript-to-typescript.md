@@ -1,13 +1,13 @@
 # Journey of Transferring Javascript to Typescript
 Hello there, this doc will show you the whole process of what I have done to transfer a Javascript project to a TypeScript project.
 
-## Starting from  Backend
+## Backend
 ### 1. Install dependency
 ```shell
 cd backend
 npm -D i typescript @types/node @types/express
 ```
-### 2. Initial the config.ts
+### 2. Initial the tsconfig.json
 ```shell
 npx tsc --init
 ```
@@ -25,6 +25,7 @@ namespace NodeJS {
 }
 ```
 ### 5. Transpile all the `*.js` files to `*.ts`
+Refer to [commit e0e83f6](https://github.com/katzkuma/mern-stack-implement/commit/e0e83f6afcf4a64b5ddddc1803ef3e10aceec87c) for detailed code changed
 
 ### 6. Edit the launch script of package.json to build transpiling pipeline.
 Because `tsc` will only transpile all the `.ts` files to `./dist/*.js`, the other files need to be copied separately.
@@ -55,6 +56,7 @@ Add transpiling process into launch script of `package.json`
 | test | Run the testing code `*.test.ts` |
 
 ### 7. Done!
+Run `npm start` or `npm run dev` to check if the system is working.
 ## Then Testing Code of Backend
 ### 1. Replace `jest` to `ts-jest`
 ```shell
@@ -92,5 +94,29 @@ Leave the original testing command. `ts-jest` will use the same command to run t
 }
 ```
 ### 5. Done!
-## Frontend Coming soon.
+Run `npm run test` to check if the system is working.
+## Frontend
+Now start to transfer the frontend to Typescript.
+>There is no need to manually run the TypeScript compiler (tsc). Modern development tools for React can handle TypeScript compilation automatically in most cases. 
+
+So that we don't need either to write the launch script in `package.json` or to edit the `outDir` property in `tsconfig.ts` 
+### 1. Install needed dependency
+The dependencies we will need are `typescript` and other` @types/` dependdencies depends on what project needs.
+```shell
+cd backend
+npm -D i typescript @types/jest @types/react
+```
+### 2. Initial the tsconfig.json
+Create an tsconfig.json and keep the property as default
+```shell
+npx tsc --init
+```
+
+### 3. Transpile all the `*.js` files to `*.ts` or `*.tsx`
+*If the file is written with HTML, the file name needs to be `.tsx` in Typescript*
+
+### 4. Done
+Run `npm start` to check if the system is working.
+
+---
 ## Happy Transferring!

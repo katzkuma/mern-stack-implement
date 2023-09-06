@@ -1,19 +1,18 @@
-import { useState } from "react"
+import { useState, FormEvent } from "react"
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext"
+import Workout, { createEmptyWorkout } from '../models/WorkoutModel';
 
 const WorkoutForm = () => {
-    const[title, setTitle] = useState('')
-    const[load, setLoad] = useState('')
-    const[reps, setReps] = useState('')
-    const[error, setError] = useState(null)
-    const[emptyFields, setEmptyFields] = useState([])
+    const[workout, setWorkout] = useState<Workout>(createEmptyWorkout())
+    const[error, setError] = useState<string | null>('')
+    const[emptyFields, setEmptyFields] = useState<string[]>([])
 
     const { dispatch } = useWorkoutsContext()
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const workout = { title, load, reps }
+        // const workout = { title, load, reps }
 
         const response = await fetch('/api/workouts', {
             method: 'POST',
@@ -31,9 +30,14 @@ const WorkoutForm = () => {
         }
 
         if(response.ok) {
-            setTitle('')
-            setLoad('')
-            setReps('')
+            setWorkout({
+                _id: '', 
+                title: '',
+                load: 0,
+                reps: 0,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            })
             setError(null)
             setEmptyFields([])
             console.log('new workout added')
@@ -47,22 +51,22 @@ const WorkoutForm = () => {
             <label>Excersize Title:</label>
             <input 
                 type="text"
-                onChange={(e) => setTitle(e.target.value)}
-                value={title}
+                onChange={(e) => setWorkout({...workout, title: e.target.value})}
+                value={ workout.title }
                 className={emptyFields.includes('title') ? 'error' : ''}
             />
             <label>Load (in kg):</label>
             <input 
                 type="number"
-                onChange={(e) => setLoad(e.target.value)}
-                value={load}
+                onChange={(e) => setWorkout({...workout, load: parseFloat(e.target.value)})}
+                value={ workout.load }
                 className={emptyFields.includes('load') ? 'error' : ''}
             />
             <label>Reps:</label>
             <input 
                 type="number"
-                onChange={(e) => setReps(e.target.value)}
-                value={reps}
+                onChange={(e) => setWorkout({...workout, reps: parseFloat(e.target.value)})}
+                value={workout.reps}
                 className={emptyFields.includes('reps') ? 'error' : ''}
             />
 

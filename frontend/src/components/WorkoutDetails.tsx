@@ -1,8 +1,9 @@
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext"
+import Workout from '../models/WorkoutModel';
 
 import formatDistanceToNow from "date-fns/formatDistanceToNow"
 
-const WorkoutDetails = ( { workout } ) => {
+const WorkoutDetails = ( { workout }: {workout: Workout} ) => {
     const { dispatch } = useWorkoutsContext()
 
     const handleClick = async () => {
