@@ -3,6 +3,15 @@ import { ActionContentDTO } from '../dtos/actionContentDTO';
 import { Request } from 'express'
 import { workoutValidator } from "../validators/workoutValidator";
 
+// get all workouts
+export const getWorkoutsService = async (): Promise<ActionContentDTO> => {
+    try {
+        const workouts = await Workout.find({}).sort({createAt: -1})
+        return { type: "success", content: { title: "", message: "Get workout data successful", payload: workouts}}    
+    } catch (error) {
+        return { type: "error", content: { title: "", message: "Get workout data fail", payload: null}}    
+    }
+}
 
 // create new workout
 export const createWorkoutService = async (req: Request): Promise<ActionContentDTO> => {

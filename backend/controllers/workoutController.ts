@@ -1,17 +1,24 @@
 import Workout, { workoutInterface } from '../models/workoutModel';
-import { createWorkoutService } from '../services/workoutService';
+import { 
+    createWorkoutService,
+    getWorkoutsService
+} from '../services/workoutService';
 import { Request, Response } from 'express'
 
 import mongoose from 'mongoose';
 
 // get all workouts
 export const getWorkouts = async (req: Request, res: Response) => {
-    const workouts = await Workout.find({}).sort({createAt: -1})
-    Workout.find({
-        load: 123,
-    })
-
-    res.status(200).json(workouts)
+    // get all the workout data from database
+    const result = await getWorkoutsService()
+    //return response
+    switch (result.type) {
+        case "success":
+            return res.status(200).json(result.content.payload)
+        default:
+            return res.status(400).json({error: result.content.message})
+            break;
+    }
 }
 
 // get a single workout
@@ -33,7 +40,7 @@ export const getWorkout = async (req: Request, res: Response) => {
 
 // create new workout
 export const createWorkout = async (req: Request, res: Response) => {
-    // create workout into database
+    // create workout data into database
     const result = await createWorkoutService(req)
 
     //return response

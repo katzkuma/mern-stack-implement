@@ -7,7 +7,7 @@ export type ActionContentDTO =
     content: {
         title: '',
         message: string,
-        payload: Document | null
+        payload: Document | Document[] | null
     }
 }
 | {
@@ -15,7 +15,7 @@ export type ActionContentDTO =
     content: {
         title: '',
         message: string,
-        payload: string
+        payload: string | null
     }
 }
 | {
