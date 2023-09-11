@@ -26,7 +26,7 @@ const WorkoutForm = () => {
 
         if(!response.ok) {
             setError(json.error)
-            setEmptyFields(json.emptyFields)
+            setEmptyFields(json.content)
         }
 
         if(response.ok) {

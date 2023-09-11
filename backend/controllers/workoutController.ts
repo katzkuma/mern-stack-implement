@@ -1,4 +1,5 @@
 import Workout, { workoutInterface } from '../models/workoutModel';
+import { createWorkoutService } from '../services/workoutService';
 import { Request, Response } from 'express'
 
 import mongoose from 'mongoose';
@@ -32,29 +33,22 @@ export const getWorkout = async (req: Request, res: Response) => {
 
 // create new workout
 export const createWorkout = async (req: Request, res: Response) => {
-    const {title, load, reps}: workoutInterface = req.body
+    // create workout into database
+    const result = await createWorkoutService(req)
 
-    let emptyFields: string[] = []
-
-    if(!title) {
-        emptyFields.push('title')
-    }
-    if(!load) {
-        emptyFields.push('load')
-    }
-    if(!reps) {
-        emptyFields.push('reps')
-    }
-    if(emptyFields.length > 0) {
-        return res.status(400).json({ error: 'Please fill in all the fields', emptyFields})
-    }
-
-    // add doc to db
-    try {
-        const workout = await Workout.create({title, load, reps})
-        res.status(200).json(workout)
-    } catch (error: any) {
-        res.status(400).json({error: error.message})
+    //return response
+    switch (result.type) {
+        case "success":
+            return res.status(200).json(result.content.payload)
+        case "error":
+            if (result.content.title == '') {
+                return res.status(400).json({error: result.content.message})
+            }
+            if (result.content.title == 'validator-empty-fields') {
+                return res.status(400).json({ error: result.content.message, content: result.content.payload})
+            }
+        default:
+            break;
     }
 }
 
