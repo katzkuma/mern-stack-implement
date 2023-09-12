@@ -18,11 +18,10 @@ I'll be documenting my learning journey in this repository. Whether you're a rec
 ## Features
 
 - [x] Basic CRUD app building.
-- [x] Mantain complete git records
+- [x] Maintain complete git records
 - [x] Practice Test-driven development while building back-end
-- [ ] Transfer Javascript to Typescript. Plz look at the [Journey of Transferring](./docs/transfer-javascript-to-typescript.md)
-- [ ] Authorization
-- [ ] Data validation
+- [x] Transfer Javascript to Typescript. Check this [Journey of Transferring](./docs/transfer-javascript-to-typescript.md)
+- [ ] 🛠️ Authorization and Data validation 🛠️
 - [ ] ...other essential functions
 
 ## Getting Started
