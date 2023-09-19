@@ -1,9 +1,18 @@
 import { Request } from "express"
+import { Types } from 'mongoose';
 import { workoutInterface } from "../models/workoutModel"
 import { ActionContentDTO } from "../dtos/actionContentDTO"
 
+// validate if the id of workoutRequest is valid
+export const isIdValidValidator = (_id: string): boolean => {
+    if (!Types.ObjectId.isValid(_id)) {
+        return false
+    }
+    return true
+}
+
 // validate if there is an empty field
-export const workoutValidator = (req: Request): ActionContentDTO => {
+export const createWorkoutValidator = (req: Request): ActionContentDTO => {
     const {title, load, reps}: workoutInterface = req.body
 
     let emptyFields: string[] = []
@@ -17,7 +26,8 @@ export const workoutValidator = (req: Request): ActionContentDTO => {
     if(!reps) {
         emptyFields.push('reps')
     }
-    if(emptyFields.length = 0) {
+    console.log(emptyFields.length)
+    if(emptyFields.length == 0) {
         return {type: 'success', content: {title: "validator-passed", message: 'Validation passed', payload: null}}
     }
 

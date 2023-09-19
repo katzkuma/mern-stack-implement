@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 export interface BaseSchema  {
-    _id: String;
+    _id: string;
     createdAt: Date;
     updatedAt: Date;
 }

@@ -1,7 +1,8 @@
 import Workout, { workoutInterface } from '../models/workoutModel';
 import { 
     createWorkoutService,
-    getWorkoutsService
+    getWorkoutsService,
+    getWorkoutService,
 } from '../services/workoutService';
 import { Request, Response } from 'express'
 
@@ -23,19 +24,23 @@ export const getWorkouts = async (req: Request, res: Response) => {
 
 // get a single workout
 export const getWorkout = async (req: Request, res: Response) => {
-    const {id} = req.params
+    // get the id from request
+    const {_id} = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({error: 'No such workout'})
+    // get all the workout data from database
+    const result = await getWorkoutService(_id)
+
+    switch (result.type) {
+        case "success":
+            res.status(200).json(result.content.payload)
+            break;
+    
+        case "error":
+            res.status(404).json({error: result.content.message})
+            break;
+        default:
+            break;
     }
-
-    const workout = await Workout.findById(id)
-
-    if(!workout) {
-        return res.status(404).json({error: 'No such workout'})
-    }
-
-    res.status(200).json(workout)
 }
 
 // create new workout
