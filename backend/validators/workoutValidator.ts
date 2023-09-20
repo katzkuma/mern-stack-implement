@@ -12,11 +12,12 @@ export const isIdValidValidator = (_id: string): boolean => {
 }
 
 // validate if there is an empty field
-export const createWorkoutValidator = (req: Request): ActionContentDTO => {
-    const {title, load, reps}: workoutInterface = req.body
+export const hasEmptyFieldInWorkoutFormValidator = (req: Request): ActionContentDTO => {
+    // get the property of workout form
+    const {title, load, reps} = req.body
 
+    // calculate empty fields
     let emptyFields: string[] = []
-
     if(!title) {
         emptyFields.push('title')
     }
@@ -26,10 +27,12 @@ export const createWorkoutValidator = (req: Request): ActionContentDTO => {
     if(!reps) {
         emptyFields.push('reps')
     }
-    console.log(emptyFields.length)
+
+    // no empty field
     if(emptyFields.length == 0) {
         return {type: 'success', content: {title: "validator-passed", message: 'Validation passed', payload: null}}
     }
 
+    // with any empty field
     return {type: 'error', content: {title: "validator-empty-fields", message: '', payload: emptyFields}}
 }

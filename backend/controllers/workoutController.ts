@@ -3,6 +3,8 @@ import {
     createWorkoutService,
     getWorkoutsService,
     getWorkoutService,
+    updateWorkoutService,
+    deleteWorkoutInDB,
 } from '../services/workoutService';
 import { Request, Response } from 'express'
 
@@ -25,10 +27,10 @@ export const getWorkouts = async (req: Request, res: Response) => {
 // get a single workout
 export const getWorkout = async (req: Request, res: Response) => {
     // get the id from request
-    const {_id} = req.params
+    const {id} = req.params
 
     // get all the workout data from database
-    const result = await getWorkoutService(_id)
+    const result = await getWorkoutService(id)
 
     switch (result.type) {
         case "success":
@@ -66,34 +68,41 @@ export const createWorkout = async (req: Request, res: Response) => {
 
 // delete a workout
 export const deleteWorkout = async (req: Request, res: Response) => {
+    // get param from URL
     const { id } = req.params
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({error: 'No such workout'})
+
+    const result = await deleteWorkoutInDB(id)
+
+    //return response
+    switch (result.type) {
+        case "success":
+            return res.status(200).json(result.content.payload)
+        case "error":
+            if (result.content.title == '') {
+                return res.status(400).json({error: result.content.message})
+            }
+        default:
+            break;
     }
-
-    const workout = await Workout.findOneAndDelete({_id: id})
-
-    if(!workout) {
-        return res.status(400).json({error: 'No such workout'})
-    }
-
-    res.status(200).json(workout)
 }
 
 // update a workout
 export const updateWorkout = async (req: Request, res: Response) => {
     const { id } = req.params
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({error: 'No such workout'})
+    const result = await updateWorkoutService(id, req)
+
+    //return response
+    switch (result.type) {
+        case "success":
+            return res.status(200).json(result.content.payload)
+        case "error":
+            if (result.content.title == '') {
+                return res.status(400).json({error: result.content.message})
+            }
+            if (result.content.title == 'validator-empty-fields') {
+                return res.status(400).json({ error: result.content.message, content: result.content.payload})
+            }
+        default:
+            break;
     }
-
-    const workout = await Workout.findOneAndUpdate({_id: id}, {
-        ...req.body
-    })
-
-    if(!workout) {
-        return res.status(400).json({error: 'No such workout'})
-    }
-
-    res.status(200).json(workout)
 }
