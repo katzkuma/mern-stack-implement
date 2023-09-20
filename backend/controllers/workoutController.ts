@@ -1,9 +1,9 @@
 import Workout, { workoutInterface } from '../models/workoutModel';
 import { 
-    createWorkoutService,
-    getWorkoutsService,
-    getWorkoutService,
-    updateWorkoutService,
+    createWorkoutInDB,
+    getWorkoutsFromDB,
+    getWorkoutByIdFromDB,
+    updateWorkoutInDB,
     deleteWorkoutInDB,
 } from '../services/workoutService';
 import { Request, Response } from 'express'
@@ -13,7 +13,7 @@ import mongoose from 'mongoose';
 // get all workouts
 export const getWorkouts = async (req: Request, res: Response) => {
     // get all the workout data from database
-    const result = await getWorkoutsService()
+    const result = await getWorkoutsFromDB()
     //return response
     switch (result.type) {
         case "success":
@@ -30,7 +30,7 @@ export const getWorkout = async (req: Request, res: Response) => {
     const {id} = req.params
 
     // get all the workout data from database
-    const result = await getWorkoutService(id)
+    const result = await getWorkoutByIdFromDB(id)
 
     switch (result.type) {
         case "success":
@@ -48,7 +48,7 @@ export const getWorkout = async (req: Request, res: Response) => {
 // create new workout
 export const createWorkout = async (req: Request, res: Response) => {
     // create workout data into database
-    const result = await createWorkoutService(req)
+    const result = await createWorkoutInDB(req)
 
     //return response
     switch (result.type) {
@@ -89,7 +89,7 @@ export const deleteWorkout = async (req: Request, res: Response) => {
 // update a workout
 export const updateWorkout = async (req: Request, res: Response) => {
     const { id } = req.params
-    const result = await updateWorkoutService(id, req)
+    const result = await updateWorkoutInDB(id, req)
 
     //return response
     switch (result.type) {

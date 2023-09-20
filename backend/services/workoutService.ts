@@ -7,7 +7,7 @@ import {
  } from "../validators/workoutValidator";
 
 // get all workouts
-export const getWorkoutsService = async (): Promise<ActionContentDTO> => {
+export const getWorkoutsFromDB = async (): Promise<ActionContentDTO> => {
     try {
         const workouts = await Workout.find({}).sort({createAt: -1})
         return { type: "success", content: { title: "", message: "Get workout data successful", payload: workouts}}    
@@ -17,7 +17,7 @@ export const getWorkoutsService = async (): Promise<ActionContentDTO> => {
 }
 
 // get a single workout
-export const getWorkoutService = async (_id: string): Promise<ActionContentDTO> => {
+export const getWorkoutByIdFromDB = async (_id: string): Promise<ActionContentDTO> => {
     // validate the workout data from request
     if (!isIdValidValidator(_id)) {
         return { type: 'error', content: { title: '', message: 'No such workout data', payload: null}}
@@ -34,7 +34,7 @@ export const getWorkoutService = async (_id: string): Promise<ActionContentDTO> 
 }
 
 // create new workout
-export const createWorkoutService = async (req: Request): Promise<ActionContentDTO> => {
+export const createWorkoutInDB = async (req: Request): Promise<ActionContentDTO> => {
     // validate if there is an empty field
     const result = hasEmptyFieldInWorkoutFormValidator(req)
     if(result.type != "success"){
@@ -52,7 +52,7 @@ export const createWorkoutService = async (req: Request): Promise<ActionContentD
     }
 }
 
-export const updateWorkoutService = async (_id: string, req: Request): Promise<ActionContentDTO> => {
+export const updateWorkoutInDB = async (_id: string, req: Request): Promise<ActionContentDTO> => {
     // validate the workout data from request
     if (!isIdValidValidator(_id)) {
         return { type: 'error', content: { title: '', message: 'No such workout data', payload: null}}
