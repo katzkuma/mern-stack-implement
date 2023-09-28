@@ -21,7 +21,7 @@ I'll be documenting my learning journey in this repository. Whether you're a rec
 - [x] Maintain complete git records
 - [x] Practice Test-driven development while building back-end
 - [x] Transfer Javascript to Typescript. Check this [Journey of Transferring](./docs/transfer-javascript-to-typescript.md)
-- [ ] Integrate Terraform to manage server on cloud
+- [ ] 🛠️ Integrate Terraform to manage server on cloud. Check this [Journey of Terraforming](./docs/integrate-terraform.md)
 - [ ] Integrate Kubernetes to manage the docker
 - [ ] Authorization and Data validation
 - [ ] ...other essential functions
